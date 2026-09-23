@@ -6,10 +6,11 @@
     <meta name="description" content="Laboratorio de JavaScript, DOM y animación con Canvas de la semana 04.">
     <title>Órbita · Laboratorio de movimiento</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="engine.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
-    <!-- Asistencia de IA: estructura y presentación inicial; lógica pendiente de implementación manual. -->
+    <!-- Asistencia de IA: estructura, presentación y lógica desarrolladas a petición del estudiante. -->
     <div class="workspace">
       <header class="topbar">
         <a class="brand" href="index.html"><span class="brand-icon" aria-hidden="true">◎</span> órbita<span class="brand-label">/ laboratorio</span></a>
@@ -27,18 +28,18 @@
           <section class="stage panel" aria-labelledby="canvas-title">
             <header class="panel-header">
               <h2 id="canvas-title"><span class="status-dot" aria-hidden="true"></span> Espacio de simulación</h2>
-              <span id="status" class="badge" role="status">Por implementar</span>
+              <span id="status" class="badge" role="status">Cargando laboratorio</span>
             </header>
             <div class="canvas-container">
               <canvas id="particle-canvas" width="960" height="600" aria-label="Área de animación de partículas">Tu navegador no admite Canvas. Utiliza un navegador compatible para realizar la práctica.</canvas>
               <div id="empty-state" class="empty-state">
                 <span class="orbit-art" aria-hidden="true">✦</span>
                 <h3>El movimiento empieza contigo</h3>
-                <p>Completa el motor de animación en <code>app.js</code> para dar vida a este espacio.</p>
-                <span class="small-label">CANVAS 2D / LISTO PARA PROGRAMAR</span>
+                <p>Pulsa Iniciar simulación y acerca el puntero para dibujar nuevas constelaciones.</p>
+                <span class="small-label">TU PRÓXIMO EXPERIMENTO EMPIEZA AQUÍ</span>
               </div>
             </div>
-            <footer class="stage-footer"><span>Motor: requestAnimationFrame</span><span>Movimiento con delta time</span></footer>
+            <footer class="stage-footer"><span>✦ Acerca el puntero para atraer partículas</span><span>Explora a tu ritmo</span></footer>
           </section>
 
           <aside class="controls panel" aria-labelledby="controls-title">
@@ -47,7 +48,7 @@
             <p class="muted">Ajusta los parámetros de tu universo.</p>
             <form id="controls-form">
               <fieldset disabled>
-                <legend class="sr-only">Parámetros de animación pendientes de implementar</legend>
+                <legend class="sr-only">Parámetros de animación</legend>
                 <div class="field">
                   <label for="particle-count">Cantidad de partículas <output id="count-output" for="particle-count">80</output></label>
                   <input id="particle-count" name="count" type="range" min="10" max="200" value="80" step="10" aria-describedby="count-hint">
@@ -64,17 +65,18 @@
                 <label class="checkbox"><input id="trails" name="trails" type="checkbox"> Mostrar estelas</label>
                 <div class="actions"><button id="toggle-animation" type="button" class="primary">Iniciar simulación <span aria-hidden="true">↗</span></button><button id="reset-animation" type="button" class="secondary">Reiniciar</button></div>
               </fieldset>
-              <p class="notice">Controles desactivados hasta completar la lógica del ejercicio.</p>
+              <p class="notice">Preparando los controles…</p>
+              <noscript><p>Activa JavaScript en tu navegador para utilizar el laboratorio.</p></noscript>
               <p id="validation-message" role="alert"></p>
             </form>
           </aside>
         </div>
 
-        <section class="metrics" aria-label="Métricas de rendimiento pendientes de medición">
+        <section class="metrics" aria-label="Métricas de rendimiento en tiempo real">
           <article class="metric"><span>Fluidez</span><p><output id="fps-output">—</output> <small>FPS</small></p></article>
-          <article class="metric"><span>Tiempo por frame</span><p><output id="frame-output">—</output> <small>ms</small></p></article>
+          <article class="metric"><span>Intervalo entre frames</span><p><output id="frame-output">—</output> <small>ms</small></p></article>
           <article class="metric"><span>Partículas activas</span><p><output id="active-output">—</output> <small>objetos</small></p></article>
-          <article class="metric"><span>Estado del motor</span><p class="engine-state" id="engine-output">Pendiente</p></article>
+          <article class="metric"><span>Estado del motor</span><p class="engine-state" id="engine-output">Cargando</p></article>
         </section>
 
         <section class="learning panel" aria-labelledby="learning-title">
