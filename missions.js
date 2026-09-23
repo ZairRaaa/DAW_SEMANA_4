@@ -306,7 +306,10 @@
       toggle.setAttribute('aria-expanded', String(enabled));
       if (enabled) active.add(id); else active.delete(id);
       if (id === '1') { if (enabled) beacon?.resize(); else beacon?.pause(); }
-      if (id === '3' && !enabled) $('#lunar-module').classList.remove('is-pulsing');
+      if (id === '3' && !enabled) {
+        $('#lunar-module').classList.remove('is-pulsing');
+        $('#pulse-module').textContent = 'Activar pulso';
+      }
       if (id === '5') {
         if (enabled && !document.hidden) monitor.start();
         else { monitor.stop(); monitor.release(); }

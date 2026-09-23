@@ -1,133 +1,79 @@
-# Órbita · Laboratorio de movimiento
+# Órbita · Estación de experimentos
 
-Práctica de la semana 04 de Desarrollo de Aplicaciones Web, Ingeniería de Sistemas, UNCP. Simulación interactiva hecha con HTML, CSS y JavaScript puro, sin frameworks, librerías externas ni dependencias de ejecución.
+Práctica de la semana 04 · Desarrollo de Aplicaciones Web · Ingeniería de Sistemas · UNCP.
 
-## Cómo abrirlo
+Una estación espacial con cinco misiones activables. El diseño toma como referencia las funcionalidades de las imágenes proporcionadas por el estudiante y las presenta con una identidad propia: tonos claros, planeta ilustrado con CSS y panel de código oscuro.
 
-Abre `index.html` directamente en un navegador moderno o usa **Open with Live Server** desde Visual Studio Code. No necesitas instalar paquetes ni compilar.
+## Abrir la estación
 
-1. Pulsa **Iniciar simulación**.
-2. Ajusta cantidad, velocidad, paleta y estelas mientras observas el canvas.
-3. Acerca el puntero para atraer las partículas.
-4. Usa **Pausar / Continuar** para controlar el movimiento.
-5. **Reiniciar** detiene el motor y restaura 80 partículas, velocidad 1×, paleta menta y estelas desactivadas.
+Abre `index.html` en un navegador moderno o utiliza **Open with Live Server** en Visual Studio Code. No hay dependencias, compilación ni servicios externos.
 
-La página comienza sin movimiento. Al ocultar la pestaña se pausa y requiere continuar manualmente. También se pausa si activas la preferencia de movimiento reducido del sistema.
+La primera misión se abre inicialmente. Activa las demás por separado o utiliza **Activar todas**. Abrir una misión no pone en marcha automáticamente sus animaciones; el monitor sí inicia su muestreo cuando se activa.
 
-## Funcionalidades
+## Las cinco misiones
 
-- Entre 10 y 200 partículas, velocidad de 0.25× a 3× y tres paletas.
-- Partículas con rebote, conexiones por proximidad, atracción del puntero y estelas.
-- Paleta visual de la interfaz sincronizada con la simulación mediante clases y variables CSS.
-- Métricas de FPS, intervalo entre frames y cantidad de partículas.
-- Explicaciones desplegables, controles etiquetados, foco visible y diseño adaptable.
-- Validación de parámetros y mensaje de error si Canvas 2D no está disponible.
+| Misión | Experiencia | Conceptos |
+| --- | --- | --- |
+| 01 · Tu señal en el universo | Escribe tu nombre, transmite, pausa, cambia velocidad y restablece | HTML, defer, Canvas y requestAnimationFrame |
+| 02 · El núcleo que recuerda | Envía órdenes y carga energía; el estado persiste al cerrar el módulo | IIFE, closure, funciones flecha |
+| 03 · Módulo lunar | Alterna energía, activa un pulso, observa eventos y valida un correo | DOM, classList, capturing, bubbling, validación |
+| 04 · Tu constelación | Controla partículas, velocidad, paleta, estelas y atracción del puntero | Canvas 2D, delta time, rebotes, cancelAnimationFrame |
+| 05 · Telemetría | Observa FPS, heap disponible, listeners del módulo y retención controlada | Performance, referencias y limpieza |
 
-Los FPS y el intervalo se actualizan aproximadamente cada segundo mientras el motor está activo. Al pausar se muestran guiones; no se presentan datos antiguos como mediciones actuales.
+El panel **Código al descubierto** muestra fragmentos de las funciones implementadas mediante `toString()`. Las pestañas corresponden a las misiones activas. El botón Copiar utiliza el portapapeles; si el navegador lo bloquea, selecciona el texto para copiarlo con Ctrl+C. Los fragmentos necesitan el contexto del proyecto y no son programas independientes.
 
-## Organización del código
+## Comportamiento
 
-| Archivo | Responsabilidad |
-| --- | --- |
-| `index.html` | Estructura semántica, controles, Canvas y explicaciones |
-| `styles.css` | Diseño adaptable, paletas y estados visuales |
-| `engine.js` | IIFE, fábrica del motor, closure privado, física, dibujo y medición |
-| `app.js` | IIFE de integración DOM, eventos, validación visible y ciclo de vida |
-| `tests/engine.test.cjs` | Pruebas del motor con Canvas y reloj simulados |
-| `tests/app.test.cjs` | Pruebas de integración con DOM simulado |
-| `informacion.md` | Enunciado original de la práctica |
+- El nombre admite hasta 24 caracteres y se dibuja como texto, sin interpretar HTML.
+- El núcleo acumula órdenes y energía hasta 100 %. Cerrar la misión conserva ese estado; reiniciar memoria lo elimina.
+- El módulo lunar cambia mediante clases CSS. El indicador de eventos muestra captura, acción y burbujeo.
+- El formulario usa validación nativa del campo email, sin enviar ni guardar datos.
+- El campo de estrellas admite de 10 a 200 partículas, velocidad de 0.25× a 3× y tres paletas. **+ Estrella** añade una partícula hasta el límite.
+- Reiniciar la constelación restaura los valores originales y pausa la simulación.
+- Ocultar la pestaña pausa las animaciones. Al volver, solo se reactiva el monitor si su misión sigue abierta.
+- Desactivar una misión cancela su animación o monitor; desactivar telemetría también libera los bloques didácticos.
+- La preferencia de movimiento reducido elimina el pulso CSS. Las animaciones Canvas requieren una acción explícita y se pausan cuando se activa esa preferencia.
 
-Los scripts se cargan con `defer`, en orden: primero el motor y después la interfaz. La API pública `window.OrbitEngine` contiene la fábrica y los valores iniciales; las partículas y el estado de cada instancia son privados.
+## Telemetría sin cifras inventadas
 
-## Conceptos de la práctica
+Los FPS del monitor se calculan con sus callbacks de `requestAnimationFrame`; no representan el tiempo de CPU ni certifican todos los repintados de la pantalla. La gráfica conserva 60 muestras, aproximadamente una por segundo, y ajusta su escala a la frecuencia observada. El motor de partículas tiene métricas independientes dentro de su misión.
 
-### IIFE, closures y funciones flecha
+El heap depende de la API opcional `performance.memory`: si no existe, se muestra **N/D**. El porcentaje compara el heap usado con el límite informado por el navegador; no es un porcentaje de RAM física. Los buffers didácticos no necesariamente aparecen reflejados en esa cifra de heap.
 
-Las IIFE aíslan los nombres de cada archivo. La fábrica `create` conserva partículas, opciones, estado, timestamp e identificador del frame en su ámbito. Las operaciones devueltas y el callback de animación mantienen acceso a esas variables mediante un closure, incluso después de terminar la llamada inicial a la fábrica.
+El contador de listeners corresponde solo a los registrados por el gestor de misiones; no representa todos los listeners del navegador o del proyecto. Las tareas largas se observan mediante `PerformanceObserver` cuando el navegador soporta `longtask`.
 
-Los handlers usan funciones flecha y acceden a referencias explícitas de los controles: no dependen del `this` dinámico de un elemento.
+**Simular retención** mantiene un buffer de 2 MiB por clic, con un máximo de cinco bloques (10 MiB). Es una demostración controlada, no un detector de fugas ni una fuga permanente. **Liberar referencias** vacía la colección; la recolección de basura queda a cargo del navegador. La bitácora conserva como máximo 30 entradas.
 
-### DOM y eventos
+## Organización
 
-`querySelector` obtiene los elementos y `addEventListener` conecta las acciones. El formulario recibe los eventos `input` por bubbling, por lo que un solo listener atiende sus controles. Capturing recorrería los ancestros antes de llegar al objetivo; aquí se utiliza la fase de burbujeo predeterminada.
+- `index.html`: cinco misiones, controles y panel lateral.
+- `styles.css`: identidad visual, componentes, temas, movimiento reducido y adaptación móvil.
+- `engine.js`: motor de partículas con estado privado, cuadrícula de proximidad y delta time.
+- `app.js`: conexión entre el motor y los controles de la constelación.
+- `missions.js`: señal Canvas, closure del núcleo, experimentos DOM, código visible y monitor.
+- `informacion.md`: enunciado original.
+- `tests/`: pruebas de la versión anterior; no se han ejecutado ni adaptado como parte de este rediseño.
 
-La validación comprueba enteros y límites para cantidad, valores finitos y límites para velocidad, paletas permitidas y un booleano para estelas. Los errores no sustituyen la configuración válida del motor.
+Se usan IIFE para aislar ámbitos y closures para conservar estado. Los handlers son funciones flecha. Las animaciones emplean requestAnimationFrame, no setInterval. Los listeners de instancia se eliminan con AbortController, los observers se desconectan y los frames se cancelan al abandonar la página. El ciclo pagehide/pageshow permite reconstruir la estación al volver desde el caché de navegación.
 
-Los estados cambian con `classList.toggle`, las paletas usan variables CSS y no hay estilos inline. Las dimensiones se leen al redimensionar y al mover el puntero, fuera del callback de animación; las métricas no escriben en el DOM en cada frame.
+## Avances de este rediseño
 
-### Canvas, Event Loop y renderizado
+1. `Rediseño la estación de misiones`.
+2. `Añado las cinco misiones interactivas`.
+3. `Organizo y documento las misiones`.
 
-El navegador invoca `requestAnimationFrame` antes del siguiente repintado. Su timestamp permite calcular segundos transcurridos: desplazamiento = velocidad × multiplicador × dt. No se utiliza `setInterval`.
+Por petición del estudiante, **no se ejecutaron tests, verificaciones ni revisión visual de esta versión**. Los resultados de pruebas de versiones anteriores no certifican este rediseño.
 
-El primer frame establece el tiempo de referencia. Al reanudar se descarta el timestamp anterior y se limita el dt de la física a 50 ms para evitar grandes saltos. La medición de FPS sí utiliza el intervalo real, sin ese límite.
+## Entrega académica
 
-Se dibuja con `fillRect`, `arc` y `stroke`. Una cuadrícula espacial limita las comparaciones de proximidad a celdas vecinas. Las estelas ajustan su desvanecimiento al tiempo transcurrido. El canvas adapta su resolución a `devicePixelRatio`; `setTransform` evita acumular escalas.
+Implementación realizada con asistencia de IA, declarada en los archivos. No acredita el porcentaje de desarrollo manual exigido en la guía original.
 
-### Limpieza y rendimiento
+Quedan por incorporar las evidencias personales de entrega: nombres y apellidos, capturas de Visual Studio Code y de la página local, y registros reales de Performance/Memory. No se han inventado capturas, métricas ni diagnósticos.
 
-- Iniciar es idempotente: no crea un segundo loop si ya existe uno activo.
-- Pausar utiliza `cancelAnimationFrame` y limpia el reloj de medición.
-- `visibilitychange` pausa cuando se oculta la página.
-- `AbortController` retira los listeners de cada instancia al salir.
-- `ResizeObserver.disconnect` libera la observación y el motor descarta sus partículas al destruirse.
-- `pagehide` limpia y `pageshow` restaura una instancia si regresas mediante el caché de navegación.
-- Los dos listeners de ciclo de vida pertenecen a la página y se registran una sola vez.
-
-La liberación de referencias permite la recolección de basura, pero no garantiza cuándo se ejecuta. Los tests de limpieza no sustituyen un análisis del heap en DevTools.
-
-## Verificaciones realizadas
-
-Ejecutadas el 23 de septiembre de 2026 con Node.js v22.14.0:
-
-```sh
-node --check engine.js
-node --check app.js
-node --test tests/engine.test.cjs tests/app.test.cjs
-git diff --check
-```
-
-**Resultado: 13 pruebas aprobadas, 0 fallidas.**
-
-Se verificaron: loop único, cancelación, equivalencia de desplazamiento a 30/60/120 Hz, reanudación sin saltos, validación, límites de rebote, resolución del canvas, medición sin confundir dt limitado con intervalo real, diez reinicios, contexto nulo, sincronización de controles y tema, pausa al ocultar, limpieza durante diez salidas/regresos y movimiento reducido.
-
-Estas pruebas usan reloj, Canvas y DOM simulados. No miden FPS reales, rasterizado, accesibilidad completa ni memoria del navegador. La revisión visual automatizada fue bloqueada por la política de acceso a archivos locales del navegador integrado; no se tomaron capturas ni se completó un perfil real de Performance/Memory.
-
-## Métricas de navegador para la entrega
-
-Los contadores están implementados. **Las mediciones reales de esta tabla están pendientes**, no se han sustituido por resultados sintéticos de los tests.
-
-Registra navegador, versión, equipo, frecuencia de pantalla y tamaño de ventana. Graba cada escenario durante 15 segundos en Performance, examina scripting, renderizado y tareas largas. El intervalo entre frames no equivale al tiempo de CPU de dibujo.
-
-| Escenario | FPS promedio | Intervalo entre frames (ms) | Heap antes/después (MB) |
+| Escenario para registrar | FPS | Intervalo entre frames | Heap observado |
 | --- | --- | --- | --- |
-| 80 partículas, velocidad 1×, sin estelas | Pendiente | Pendiente | Pendiente |
-| 200 partículas, velocidad 3×, con estelas | Pendiente | Pendiente | Pendiente |
-| Después de 10 reinicios y pausas | Pendiente | Pendiente | Pendiente |
+| Constelación con 80 partículas | Pendiente | Pendiente | Pendiente |
+| 200 partículas y estelas | Pendiente | Pendiente | Pendiente |
+| Tras activar, cerrar y reabrir misiones | Pendiente | Pendiente | Pendiente |
 
-Para Memory, compara snapshots antes y después de varios reinicios; inspecciona objetos retenidos y nodos separados del DOM. Comprueba además el diseño a 360, 768 y 1440 píxeles, navegación por teclado y ausencia de errores en Console.
-
-## Historial de avances
-
-Todos los mensajes son cortos y en primera persona:
-
-1. `Añado la interfaz del laboratorio`.
-2. `Documento los pasos de la práctica`.
-3. `Añado el motor de partículas`.
-4. `Conecto los controles de la simulación`.
-5. `Verifico la animación y los controles`.
-6. `Documento el laboratorio terminado`.
-
-## Autoría y evidencias académicas
-
-Esta versión se completó con asistencia de IA por petición expresa del estudiante. Los archivos incluyen comentarios que identifican esa ayuda. **No se acredita el 70 % de lógica escrita manualmente que exige la guía**; se debe declarar esta situación al presentar el trabajo.
-
-La implementación está completa; para la entrega académica quedan evidencias personales y verificaciones en navegador:
-
-- [ ] Completar nombres y apellidos.
-- [ ] Capturar los pasos en Visual Studio Code usando los avances reales del historial.
-- [ ] Capturar la página local funcionando.
-- [ ] Adjuntar Performance y Memory con interpretación propia.
-- [ ] Completar las métricas reales de la tabla.
-- [ ] Publicar los commits en GitHub cuando corresponda.
-
-Repositorio configurado: [DAW_SEMANA_4](https://github.com/ZairRaaa/DAW_SEMANA_4). Los commits están guardados localmente; no se ha realizado push.
+Repositorio: [DAW_SEMANA_4](https://github.com/ZairRaaa/DAW_SEMANA_4). Los avances se guardan en commits locales; no se realizó push.
