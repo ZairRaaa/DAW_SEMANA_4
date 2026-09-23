@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Estación Órbita: cinco misiones interactivas para explorar JavaScript, DOM y Canvas.">
   <title>Órbita · Estación de experimentos</title>
+  <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
   <script src="engine.js" defer>
 </script>
@@ -19,9 +20,15 @@
     <a class="brand" href="index.html">
 <span class="brand-symbol">✳</span> ÓRBITA <span class="brand-label">ESTACIÓN EXPERIMENTAL</span>
 </a>
+    <div class="header-actions">
     <span class="header-tag">
 <span class="dot">
 </span> UNCP / SEMANA 04</span>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Modo oscuro" aria-pressed="false">
+      <span id="theme-icon" aria-hidden="true">☾</span>
+      <span id="theme-label">Modo oscuro</span>
+    </button>
+    </div>
   </header>
   <main class="workspace">
     <section class="hero">

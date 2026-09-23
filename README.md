@@ -77,3 +77,9 @@ Quedan por incorporar las evidencias personales de entrega: nombres y apellidos,
 | Tras activar, cerrar y reabrir misiones | Pendiente | Pendiente | Pendiente |
 
 Repositorio: [DAW_SEMANA_4](https://github.com/ZairRaaa/DAW_SEMANA_4). Los avances se guardan en commits locales; no se realizó push.
+
+## Modo oscuro
+
+El botón de la cabecera alterna entre modo claro y oscuro. La preferencia se guarda localmente; en la primera visita se utiliza el tema del sistema. Si el almacenamiento está bloqueado, el selector sigue funcionando durante la sesión. `theme.js` aplica el tema antes de cargar los estilos para evitar destellos y mantiene el cambio separado de las paletas de partículas.
+
+Cambio añadido sin ejecutar tests ni verificaciones, según la indicación del estudiante.
