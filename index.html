@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Laboratorio de JavaScript, DOM y animación con Canvas de la semana 04.">
+    <title>Órbita · Laboratorio de movimiento</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <!-- Asistencia de IA: estructura y presentación inicial; lógica pendiente de implementación manual. -->
+    <div class="workspace">
+      <header class="topbar">
+        <a class="brand" href="index.html"><span class="brand-icon" aria-hidden="true">◎</span> órbita<span class="brand-label">/ laboratorio</span></a>
+        <span class="course">UNCP <span aria-hidden="true">·</span> Desarrollo Web</span>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <p class="eyebrow">SEMANA 04 / JAVASCRIPT & CANVAS</p>
+          <h1 id="page-title">Un pequeño universo.<br><span>Muchas posibilidades.</span></h1>
+          <p class="description">Explora cómo el código se transforma en movimiento. Un laboratorio para experimentar con partículas, tiempo y el DOM.</p>
+        </section>
+
+        <div class="lab-grid">
+          <section class="stage panel" aria-labelledby="canvas-title">
+            <header class="panel-header">
+              <h2 id="canvas-title"><span class="status-dot" aria-hidden="true"></span> Espacio de simulación</h2>
+              <span id="status" class="badge" role="status">Por implementar</span>
+            </header>
+            <div class="canvas-container">
+              <canvas id="particle-canvas" width="960" height="600" aria-label="Área de animación de partículas">Tu navegador no admite Canvas. Utiliza un navegador compatible para realizar la práctica.</canvas>
+              <div id="empty-state" class="empty-state">
+                <span class="orbit-art" aria-hidden="true">✦</span>
+                <h3>El movimiento empieza contigo</h3>
+                <p>Completa el motor de animación en <code>app.js</code> para dar vida a este espacio.</p>
+                <span class="small-label">CANVAS 2D / LISTO PARA PROGRAMAR</span>
+              </div>
+            </div>
+            <footer class="stage-footer"><span>Motor: requestAnimationFrame</span><span>Movimiento con delta time</span></footer>
+          </section>
+
+          <aside class="controls panel" aria-labelledby="controls-title">
+            <p class="eyebrow">TU EXPERIMENTO</p>
+            <h2 id="controls-title">Mesa de control</h2>
+            <p class="muted">Ajusta los parámetros de tu universo.</p>
+            <form id="controls-form">
+              <fieldset disabled>
+                <legend class="sr-only">Parámetros de animación pendientes de implementar</legend>
+                <div class="field">
+                  <label for="particle-count">Cantidad de partículas <output id="count-output" for="particle-count">80</output></label>
+                  <input id="particle-count" name="count" type="range" min="10" max="200" value="80" step="10" aria-describedby="count-hint">
+                  <small id="count-hint">Entre 10 y 200 partículas</small>
+                </div>
+                <div class="field">
+                  <label for="speed">Velocidad <output id="speed-output" for="speed">1×</output></label>
+                  <input id="speed" name="speed" type="range" min="0.25" max="3" value="1" step="0.25">
+                </div>
+                <div class="field">
+                  <label for="palette">Paleta de color</label>
+                  <select id="palette" name="palette"><option value="mint">Menta cósmica</option><option value="violet">Nebulosa violeta</option><option value="amber">Atardecer ámbar</option></select>
+                </div>
+                <label class="checkbox"><input id="trails" name="trails" type="checkbox"> Mostrar estelas</label>
+                <div class="actions"><button id="toggle-animation" type="button" class="primary">Iniciar simulación <span aria-hidden="true">↗</span></button><button id="reset-animation" type="button" class="secondary">Reiniciar</button></div>
+              </fieldset>
+              <p class="notice">Controles desactivados hasta completar la lógica del ejercicio.</p>
+              <p id="validation-message" role="alert"></p>
+            </form>
+          </aside>
+        </div>
+
+        <section class="metrics" aria-label="Métricas de rendimiento pendientes de medición">
+          <article class="metric"><span>Fluidez</span><p><output id="fps-output">—</output> <small>FPS</small></p></article>
+          <article class="metric"><span>Tiempo por frame</span><p><output id="frame-output">—</output> <small>ms</small></p></article>
+          <article class="metric"><span>Partículas activas</span><p><output id="active-output">—</output> <small>objetos</small></p></article>
+          <article class="metric"><span>Estado del motor</span><p class="engine-state" id="engine-output">Pendiente</p></article>
+        </section>
+
+        <section class="learning panel" aria-labelledby="learning-title">
+          <div><p class="eyebrow">DETRÁS DEL MOVIMIENTO</p><h2 id="learning-title">Código que puedes explicar.</h2></div>
+          <div class="concepts">
+            <details><summary><span>01</span> Estado y closures</summary><p>Un closure permite que las funciones conserven acceso al estado de su ámbito exterior. Úsalo para almacenar partículas, tiempo y el identificador del frame sin variables globales.</p></details>
+            <details><summary><span>02</span> DOM y eventos</summary><p>Conecta los controles con querySelector y addEventListener. Valida los valores y cambia las clases con classList.toggle para reflejar el estado del motor.</p></details>
+            <details><summary><span>03</span> Tiempo y renderizado</summary><p>requestAnimationFrame programa trabajo antes del siguiente repintado. Multiplica la velocidad por el tiempo transcurrido en segundos para que el desplazamiento no dependa del número de frames.</p></details>
+          </div>
+        </section>
+      </main>
+      <footer class="page-footer"><span>Órbita / Hecho para aprender experimentando.</span><span>Ingeniería de Sistemas · UNCP</span></footer>
+    </div>
+  </body>
+</html>
