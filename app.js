@@ -82,6 +82,15 @@
         syncControls();
         ui.empty.classList.toggle('is-hidden', false);
       }, { signal });
+      $('#add-particle').addEventListener('click', () => {
+        ui.count.value = String(Math.min(200, Number(ui.count.value) + 1));
+        ui.count.dispatchEvent(new Event('input', { bubbles: true }));
+      }, { signal });
+      document.addEventListener('orbit:mission', (event) => {
+        if (event.detail.id !== '4') return;
+        if (event.detail.active) engine.resize();
+        else engine.pause();
+      }, { signal });
       ui.canvas.addEventListener('pointermove', (event) => {
         const bounds = ui.canvas.getBoundingClientRect();
         engine.setPointer({ x: event.clientX - bounds.left, y: event.clientY - bounds.top });
